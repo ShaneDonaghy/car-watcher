@@ -1,0 +1,29 @@
+meta {
+  name: Create Search
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{baseUrl}}/api/searches
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "name": "Golf diesel 1.6",
+    "make": "Volkswagen",
+    "model": "Golf",
+    "fuel": "Diesel",
+    "engineSize": "1.6",
+    "minAgeYears": 0,
+    "maxAgeYears": 10,
+    "notifyEmail": "you@example.com"
+  }
+}
+
+script:after-response {
+  const searchId = res.body.id;
+  bru.setEnvVar("searchId", searchId);
+}
