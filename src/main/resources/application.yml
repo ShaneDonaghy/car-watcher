@@ -1,0 +1,47 @@
+server:
+  port: 8080
+
+spring:
+  datasource:
+    url: ${DB_URL:jdbc:h2:file:./data/carwatch;MODE=PostgreSQL;DB_CLOSE_ON_EXIT=FALSE}
+    username: ${DB_USERNAME:sa}
+    password: ${DB_PASSWORD:}
+    driver-class-name: ${DB_DRIVER:org.h2.Driver}
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    open-in-view: false
+
+  mail:
+    host: ${SMTP_HOST:smtp.gmail.com}
+    port: ${SMTP_PORT:587}
+    username: ${SMTP_USERNAME:}
+    password: ${SMTP_PASSWORD:}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+
+carwatch:
+  poll:
+    interval: PT10M
+    initial-delay: PT10S
+    request-delay-ms: 1500
+    user-agent: "Mozilla/5.0 (compatible; CarWatchdog/0.1)"
+
+  scraper:
+    donedeal:
+      base-url: "https://www.donedeal.ie"
+      listing-link-selector: "a[href*='/cars-for-sale/']"
+      ad-id-regex: "/cars-for-sale/[^/]+/(\\d+)"
+      image-selector: "img"
+      next-page-selector: "a[rel='next'], a[data-testid='pagination-next']"
+    usercarsni:
+      base-url: "https://www.usercarsni.com"
+      listing-link-selector: "a[href*='/car/'], a[href*='/used-cars/']"
+      ad-id-regex: "/(?:car|used-cars)/[^/]+/(\\d+)"
+      image-selector: "img"
+      next-page-selector: "a[rel='next'], .pagination a:last-child"
